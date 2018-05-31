@@ -57,8 +57,8 @@ ns.table.setting.column = function () {
     * @param {Array} value
     * @return {this}
     */
-    this.set = function (value, sectionType) {
-        sectionType = sectionType || constValue.sectionType.thead;
+    this.set = function (sectionType, value) {
+        //sectionType = sectionType || constValue.sectionType.thead;
         validate("set", value);
         
         __data[sectionType].columns = value;
@@ -70,7 +70,7 @@ ns.table.setting.column = function () {
     * @return {Object}
     */
     this.get = function (sectionType) {
-        sectionType = sectionType || constValue.sectionType.thead;
+        //sectionType = sectionType || constValue.sectionType.thead;
 
         return __data[sectionType];
     }
@@ -80,13 +80,13 @@ ns.table.setting.column = function () {
     * @param {String} normalizeType
     * @return {Object}
     */
-    this.IDNormalize = function (normalizeType, sectionType) {
-        sectionType = sectionType || constValue.sectionType.thead;
+    this.IDNormalize = function (sectionType, normalizeType) {
+        //sectionType = sectionType || constValue.sectionType.thead;
 
         __data[sectionType].IDNormalize = normalizeType;
     }
-    this.setValueKey = function (valueKey, sectionType) {
-        sectionType = sectionType || constValue.sectionType.thead;
+    this.setValueKey = function (sectionType, valueKey) {
+        //sectionType = sectionType || constValue.sectionType.thead;
 
         __data[sectionType].valueKey = valueKey;
     }

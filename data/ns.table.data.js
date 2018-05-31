@@ -1,15 +1,15 @@
 
 
-ns.table.data = function (options) {
+ns.table.data = function (option) {
     "use strict";
     
-    var column = new ns.table.data.column(options);
-    var row = new ns.table.data.row(options);
-    var paging = new ns.table.data.paging(options);
+    var column = new ns.table.data.column(option);
+    var row = new ns.table.data.row(option);
+    var paging = new ns.table.data.paging(option);
 
     var init = function () {
 
-        var events = options.setting.eventsGet();
+        var events = option.setting.eventsGet();
         if (!events.exist(ns.table.columnEvent.initCompleted))
             events.on(ns.table.columnEvent.initCompleted, row.init.bind(row));
         if (!events.exist(ns.table.rowEvent.initCompleted))
@@ -21,7 +21,7 @@ ns.table.data = function (options) {
         if (!events.exist(ns.table.rowEvent.renderCompleted))
             events.on(ns.table.rowEvent.renderCompleted, paging.render.bind(paging));
         if (!events.exist(ns.table.pagingEvent.renderCompleted))
-            events.on(ns.table.pagingEvent.renderCompleted, options.core.render.init.bind(options.core.render));
+            events.on(ns.table.pagingEvent.renderCompleted, option.core.render.init.bind(option.core.render));
     }
 
     var render = function () {
@@ -32,8 +32,8 @@ ns.table.data = function (options) {
         render: render,
         column: column,
         row: row,
-        //mode: new ns.table.mode(options),
-        //template: new ns.table.template(options),
+        //mode: new ns.table.mode(option),
+        //template: new ns.table.template(option),
         paging: paging
     }
 };

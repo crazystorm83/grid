@@ -13,7 +13,10 @@ ns.table.setting.common = function () {
 		controlViewMode: constValue.controlViewMode.view, // | constValue.controlViewMode.direct | constValue.controlViewMode.native
 		tableLayout: constValue.tableLayout.table, // | constValue.tableLayout.table
 		tableRenderingDirection: constValue.tableRenderingDirection.horizontal, // | constValue.tableRenderingDirection.vertical
-		columnType: constValue.columnType.single // | constValue.columnType.multi | constValue.columnType.each
+		columnType: constValue.columnType.single, // | constValue.columnType.multi | constValue.columnType.each
+
+		templateType: constValue.templateType.default,
+		defaultTableClass: ""
 	};
 	
 	this.setTableLayout = function (value) {
@@ -80,5 +83,30 @@ ns.table.setting.common = function () {
 
 	this.getControlViewMode = function () {
 		return __data.controlViewMode;
+	}
+
+	this.setTemplateType = function (templateType) {
+		switch (templateType) {
+			case "":
+				__data.defaultTableClass = "";
+				break;
+			case "":
+				__data.defaultTableClass = "";
+				break;
+			case "":
+				__data.defaultTableClass = "";
+				break;
+			case "":
+				__data.defaultTableClass = "";
+				break;
+			default:
+				__data.defaultTableClass = "";
+				break;
+		}
+		__data.templateType = templateType;
+	}
+
+	this.getTemplateType = function () {
+		return __data.templateType;
 	}
 };
