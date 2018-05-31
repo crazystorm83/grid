@@ -14,15 +14,15 @@ ns.events = function () {
         });
     }
     this.find = function (type, predicate) {
-        var result = [];
         if (typeof predicate != "function") {
             predicate = function (v, i, a) {
+                var result = [];
                 if (v.type == type)
                     result.push(v);
+                return result;
             };
         }
-        this.events.find(predicate);
-        return result;
+        return this.events.find(predicate);
     }
     this.exist = function (type) {
         return this.find(type).length > 0;
