@@ -1,0 +1,108 @@
+<html>
+<head>
+<script language="javascript" type="text/javascript" src="./library/jquery.3.3.1.js"></script>
+<script language="javascript" type="text/javascript" src="./library/decimal.js"></script>
+<script language="javascript" type="text/javascript" src="./extends/Object.prototype.js"></script>
+<script language="javascript" type="text/javascript" src="./extends/Array.prototype.js"></script>
+<script language="javascript" type="text/javascript" src="./extends/String.prototype.js"></script>
+
+<script language="javascript" type="text/javascript" src="./ns.js"></script>
+
+<script language="javascript" type="text/javascript" src="./ns.events.js"></script>
+<script language="javascript" type="text/javascript" src="./ns.transaction.js"></script>
+<script language="javascript" type="text/javascript" src="./ns.util.js"></script>
+<script language="javascript" type="text/javascript" src="./ns.common.js"></script>
+<script language="javascript" type="text/javascript" src="./ns.convertor.js"></script>
+<script language="javascript" type="text/javascript" src="./ns.table.js"></script>
+
+<script language="javascript" type="text/javascript" src="./const/ns.grid.constValue.js"></script>
+<script language="javascript" type="text/javascript" src="./const/ns.table.constEvent.js"></script>
+
+<script language="javascript" type="text/javascript" src="./setting/ns.table.setting.js"></script>
+<script language="javascript" type="text/javascript" src="./setting/ns.table.setting.events.js"></script>
+<script language="javascript" type="text/javascript" src="./setting/ns.table.setting.common.js"></script>
+<script language="javascript" type="text/javascript" src="./setting/ns.table.setting.column.js"></script>
+<script language="javascript" type="text/javascript" src="./setting/ns.table.setting.row.js"></script>
+
+<script language="javascript" type="text/javascript" src="./data/ns.table.data.js"></script>
+<script language="javascript" type="text/javascript" src="./data/ns.table.data.column.js"></script>
+<script language="javascript" type="text/javascript" src="./data/ns.table.data.column.dataType.js"></script>
+<script language="javascript" type="text/javascript" src="./data/ns.table.data.row.js"></script>
+<script language="javascript" type="text/javascript" src="./data/ns.table.data.paging.js"></script>
+
+<script language="javascript" type="text/javascript" src="./render/ns.table.render.js"></script>
+
+<script language="javascript" type="text/javascript">
+
+	ns.table.eventHandler = function () {
+		this.onClick = function (e) {
+		};
+		this.onFocus = function (e) {
+		};
+		this.onBlur = function (e) {
+		};
+		this.onMousedown = function (e) {
+		};
+		this.onMouseup = function (e) {
+		};
+		this.onKeydown = function (e) {
+		};
+		this.onKeyup = function (e) {
+		};
+		
+		this.preInitExecuteSort = function (e) {
+		};
+	};
+
+	ns.table.ui = function () {
+		
+	};
+
+	ns.table.ui.fix = function () {
+		var top, left, corner;
+	};
+
+	var events = new ns.events();
+	events.on(ns.table.rowEvent.init, function () {
+		debugger;
+	});
+	/**
+	 * 
+	 * @param {Object} data 
+	 * 	@example { prevRow, curRow, nextRow }
+	*/
+	events.on(ns.table.renderEvent.renderSkipRow, function (data) {
+		debugger;
+	});
+	events.on(ns.table.columnEvent.init, function () {
+		debugger;
+	});
+	var setting = ns.table.setting(events);
+	
+	var columns = [
+		{ id: "columnid01", propertyName: "propertyName01", width: "50" },
+		{ id: "columnid02", propertyName: "propertyName02", width: "100" },
+		{ id: "columnid03", propertyName: "propertyName03", width: "80" }
+	];
+	var headRows = [
+		{ columnid01: "title00_01", columnid02: "title00_02", columnid03: "title00_03" }
+	];
+	var bodyRows = [
+		{ columnid01: "value00_01", columnid02: "value00_02", columnid03: "value00_03" },
+		{ columnid01: "value01_01", columnid02: "value01_02", columnid03: "value01_03" },
+		{ columnid01: "value02_01", columnid02: "value02_02", columnid03: "value02_03" }
+	];
+
+	setting.commonSetTableLayout(ns.grid.constValue.tableLayout.grid).
+			eventsSet(events).
+			columnSet(columns).
+			rowSet(headRows, ns.grid.constValue.sectionType.thead).
+			rowSet(bodyRows, ns.grid.constValue.sectionType.tbody);
+
+	var g = new ns.table(setting);
+	g.draw.run();
+</script>
+</head>
+<body>
+</body>
+</html>
