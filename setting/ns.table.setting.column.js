@@ -50,7 +50,7 @@ ns.table.setting.column = function () {
                     break;
             }
         }
-    }
+    };
     
     /**
     * @param {String} sectionType
@@ -63,7 +63,7 @@ ns.table.setting.column = function () {
         
         __data[sectionType].columns = value;
         return this;
-    }
+    };
     
     /**
     * @param {String} sectionType
@@ -73,7 +73,7 @@ ns.table.setting.column = function () {
         //sectionType = sectionType || constValue.sectionType.thead;
 
         return __data[sectionType];
-    }
+    };
     
     /**
     * @param {String} sectionType
@@ -84,12 +84,12 @@ ns.table.setting.column = function () {
         //sectionType = sectionType || constValue.sectionType.thead;
 
         __data[sectionType].IDNormalize = normalizeType;
-    }
+    };
     this.setValueKey = function (sectionType, valueKey) {
         //sectionType = sectionType || constValue.sectionType.thead;
 
         __data[sectionType].valueKey = valueKey;
-    }
+    };
     this.destroyAll = function () {
         var sectionTypes = [theadType, tbodyType, tfooterType];
         for (var sectionTypeIdx = 0; sectionTypeIdx < _sectionTypes.length; sectionTypeIdx++) {
@@ -98,5 +98,5 @@ ns.table.setting.column = function () {
     }
     this.seialize = function () {
         return Object.clone(__data);
-    }
+    };
 };

@@ -32,12 +32,12 @@ ns.table.setting.sort = function () {
         __all = __data[sectionType].all;
         __enable = __data[sectionType].enable;
         __disable = __data[sectionType].disable;
-    }
+    };
 
     this.get = function (id, sectionType) {
         this.setStructureInfo(sectionType);
         return __all[id];
-    }
+    };
     
     /**
     *
@@ -47,8 +47,8 @@ ns.table.setting.sort = function () {
         for (var sectionTypeIdx = 0; sectionTypeIdx < _sectionTypes.length; sectionTypeIdx++) {
             delete __data[sectionTypes[sectionTypeIdx]];
         }
-    }
+    };
     this.seialize = function () {
         return Object.clone(__data);
-    }
+    };
 }

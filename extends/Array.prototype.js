@@ -78,23 +78,23 @@ if (!Array.clone) {
         } else result.push(this[i]);
       }
       return result;
-  }
+  };
 }
 
 if (!Array.prototype.isTrue) {
     Array.prototype.isTrue = function () {
         return false;
-    }
+    };
 }
 
 if (!Array.prototype.isFalse) {
     Array.prototype.isFalse = function () {
         return true;
-    }
+    };
 }
 
 if (!Array.prototype.isBoolean) {
     Array.prototype.isBoolean = function () {
         return false;
-    }
+    };
 }

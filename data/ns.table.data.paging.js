@@ -10,14 +10,13 @@ ns.table.data.paging  = function (option) {
     };
 
     this.init = function () {
-        debugger;
         if (core.drawCancel) {
             events && events.emit(ns.table.renderEvent.cancelCompleted);
             return { cancel: true };
         }
 
         events && events.emit(ns.table.pagingEvent.initCompleted);
-    }
+    };
 
     this.render = function () {
         if (core.drawCancel) {
@@ -26,9 +25,9 @@ ns.table.data.paging  = function (option) {
         }
 
         events && events.emit(ns.table.pagingEvent.renderCompleted);
-    }
+    };
     
     this.destroyAll = function () {
         
-    }
+    };
 }

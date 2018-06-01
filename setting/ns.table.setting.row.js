@@ -37,7 +37,7 @@ ns.table.setting.row = function () {
         __datas = __data[sectionType].datas;
         __url = __data[sectionType].url;
         __param = __data[sectionType].param;
-    }
+    };
     
     var validate = function (key, value, predicate) {
         switch (key) {
@@ -46,41 +46,41 @@ ns.table.setting.row = function () {
                     throw "value 가 Array 형식이 아닙니다.";
                 break;
         }
-    }
+    };
         
     /**
     * @param {String} sectionType
     * @param {String} url
     * @return {this}
     */
-    this.url = function (url, sectionType) {
-        sectionType = sectionType || constValue.sectionType.thead;
+    this.url = function (sectionType, url) {
+        //sectionType = sectionType || constValue.sectionType.thead;
         
         __data[sectionType].datas = null;
         __data[sectionType].url = url;
         return this;
-    }
+    };
         
     /**
     * @param {String} sectionType
     * @param {String} param
     * @return {this}
     */
-    this.param = function (param, sectionType) {
-        sectionType = sectionType || constValue.sectionType.thead;
+    this.param = function (sectionType, param) {
+        //sectionType = sectionType || constValue.sectionType.thead;
 
         __data[sectionType].datas = null;
         __data[sectionType].param = param;
         return this;
-    }
+    };
     
     /**
     * @param {String} sectionType
     * @param {Array} value
     * @return {this}
     */
-    this.set = function (value, sectionType) {
-        sectionType = sectionType || constValue.sectionType.thead;
+    this.set = function (sectionType, value) {
+        //sectionType = sectionType || constValue.sectionType.thead;
 
         validate("set", value);
         
@@ -93,16 +93,16 @@ ns.table.setting.row = function () {
     * @return {Object}
     */
     this.get = function (sectionType) {
-        sectionType = sectionType || constValue.sectionType.thead;
+        //sectionType = sectionType || constValue.sectionType.thead;
 
         return __data[sectionType];
-    }
+    };
 
     this.getAdditionalDatas = function (sectionType) {
-        sectionType = sectionType || constValue.sectionType.tbody;
+        //sectionType = sectionType || constValue.sectionType.tbody;
         
         return __data[sectionType].additionalDatas;
-    }
+    };
     
     /**
     *
@@ -112,8 +112,8 @@ ns.table.setting.row = function () {
         for (var sectionTypeIdx = 0; sectionTypeIdx < _sectionTypes.length; sectionTypeIdx++) {
             delete __data[sectionTypes[sectionTypeIdx]];
         }
-    }
+    };
     this.seialize = function () {
         return Object.clone(__data);
-    }
+    };
 };

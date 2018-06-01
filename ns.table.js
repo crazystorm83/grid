@@ -44,7 +44,7 @@ ns.table = function (setting) {
         __core.drawing = true;
         __core.data.init();
         __core.data.render();
-    }
+    };
     
     var drawRun = function () {
         if (__core.drawCancel) 
@@ -59,62 +59,69 @@ ns.table = function (setting) {
         } else {
             draw();
         }
-    }
+    };
     
     var drawCancel = function () {
         if (__core.drawing) {
             __core.drawing = false;
             __core.drawCancel = true;
         }
-    }
+    };
     
-    var rowGet = function (sectionType, id) {
-        return __core.data.row.get(sectionType, id);
-    }
+    var rowGet = function (sectionType, rowId) {
+        return __core.data.row.getById(sectionType, rowId);
+    };
+
+    var columnGet = function (sectionType, columnId) {
+        return __core.column.getById(sectionType, columnId);
+    };
+
+    var cellSetValue = function (sectionType, columnId, rowId, value) {
+        var column = columnGet(sectionType, columnId);
+        __core.row.setValue(sectionType, column.propertyName, rowId, value);        
+    };
+
+    var cellGetValue = function (sectionType, columnId, rowId) {
+        var column = columnGet(sectionType, columnId);
+        return __core.row.getValue(sectionType, column.propertyName, rowId);
+    };
     
-    var rowGetValue = function (sectionType, id, columnId) {
-        var row = rowGet(sectionType, id);
-        return row && row[columnId];
-    }
-    
-    var cellAdd = function () {
-    }
-    
-    var cellEditable = function (sectionType, columnId, rowId, value) {
-    }
+    var cellSetEditable = function (sectionType, columnId, rowId, value) {
+
+    };
+
+    var cellGetEditable = function (sectionType, columnId, rowId, value) {
+    };
     
     var cellGet = function (sectionType, columnId, rowId) {
-    }
+    };
     
     var cellMove = function (sectionType, columnId, rowId) {
-    }
+    };
     
     var cellRemove = function (sectionType, columnId, rowId) {
-    }
+    };
     
     var cellRefresh = function (sectionType, columnId, rowId) {
         var v = rowGetValue(sectionType, columnId, rowId);
         cellSet(sectionType, columnId, rowId, v);
-    }
+    };
     
     var cellSet = function (sectionType, columnId, rowId, value) {
         if (__core.transaction.state  == ns.transaction.state.open) {
             ns.transaction.push(this, renderCell, arguments);
         }
-    }
+    };
     
     var renderLine = function () {
-    }
+    };
     
     var renderCell = function () {
-    }
+    };
     
     var destroyAll = function () {
-        for (var i in __core.data) {
-            if (__core.data.hasOwnProperty(i))
-                __core.data[i].destroyAll && __core.data[i].destroyAll();
-        }
-    }
+        __core.data.destroyAll && __core.data.destroyAll();
+    };
     
     //mode 에 따른 함수 노출
     
@@ -124,10 +131,13 @@ ns.table = function (setting) {
             run: drawRun			
         },
         cell: {
+            setValue: cellSetValue
         },
-        column: __core.data.column,
-        row: __core.data.row,
-        setting: setting,		
+        // column: __core.data.column,
+        // row: __core.data.row,
+        setting: {
+            get: settingGet
+        },		
         transaction: __core.transaction,
         
         //checkbox: {
@@ -140,8 +150,9 @@ ns.table = function (setting) {
         //},
         
         cell: {
-            add: cellAdd,
-            editable: cellEditable
+            editable: cellSetEditable,
+            editable: cellGetEditable,
+            getValue: cellGetValue
             //get: cellGet,
             //move: cellMove,
             //refresh: cellRefresh,

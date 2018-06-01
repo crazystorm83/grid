@@ -35,11 +35,11 @@ ns.table.setting.common = function () {
 		__data.tableLayout = value;
 
 		return this;
-	}
+	};
 
 	this.getTableLayout = function () {
 		return __data.tableLayout;
-	}
+	};
 	
 	this.setTableRenderingDirection = function (value) {
 		if (![constValue.tableRenderingDirection.horizontal, constValue.tableRenderingDirection.vertical].includes(value)) {
@@ -50,11 +50,11 @@ ns.table.setting.common = function () {
 		__data.tableRenderingDirection = value;
 
 		return this;
-	}
+	};
 
 	this.getTableRenderingDirection = function () {
 		return __data.tableRenderingDirection;
-	}
+	};
 
 	this.setColumnType = function (columnType) {
 		if (![constValue.columnType.single, constValue.columnType.multi, constValue.columnType.each].includes(columnType)) {
@@ -63,11 +63,11 @@ ns.table.setting.common = function () {
 		}
 
 		__data.columnType = columnType;
-	}
+	};
 
 	this.getColumnType = function () {
 		return __data.columnType;
-	}
+	};
 	
 	this.setControlViewMode = function (value) {	
 		if ([constValue.controlViewMode.native, constValue.controlViewMode.view, constValue.controlViewMode.direct].includes(value)) {
@@ -79,11 +79,11 @@ ns.table.setting.common = function () {
 				throw "table layout 을 table 로 설정 후 control view mode 는 input 만 사용 가능합니다.";
 		}
 		__data.controlViewMode = value;
-	}
+	};
 
 	this.getControlViewMode = function () {
 		return __data.controlViewMode;
-	}
+	};
 
 	this.setTemplateType = function (templateType) {
 		switch (templateType) {
@@ -104,9 +104,9 @@ ns.table.setting.common = function () {
 				break;
 		}
 		__data.templateType = templateType;
-	}
+	};
 
 	this.getTemplateType = function () {
 		return __data.templateType;
-	}
+	};
 };

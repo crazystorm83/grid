@@ -7,6 +7,11 @@ ns.table.data = function (option) {
     var row = new ns.table.data.row(option);
     var paging = new ns.table.data.paging(option);
 
+    var list = [];
+    list.push(column);
+    list.push(row);
+    list.push(paging);
+
     var init = function () {
 
         var events = option.setting.eventsGet();
@@ -21,19 +26,33 @@ ns.table.data = function (option) {
         if (!events.exist(ns.table.rowEvent.renderCompleted))
             events.on(ns.table.rowEvent.renderCompleted, paging.render.bind(paging));
         if (!events.exist(ns.table.pagingEvent.renderCompleted))
-            events.on(ns.table.pagingEvent.renderCompleted, option.core.render.init.bind(option.core.render));
-    }
+            events.on(ns.table.pagingEvent.renderCompleted, renderCompleted);
+    };
 
     var render = function () {
         column.init();
+    };
+
+    var renderCompleted = function () {
+        debugger;
+        option.core.render.init();
+        option.core.render.render();
     }
+
+    var destroyAll = function () {
+        list.forEach(function (v, i, a) {
+            v.destroyAll && v.destroyAll();
+        })
+    };
+
     return {
         init: init,
         render: render,
+        destroyAll: destroyAll,
         column: column,
         row: row,
         //mode: new ns.table.mode(option),
         //template: new ns.table.template(option),
         paging: paging
-    }
+    };
 };

@@ -27,7 +27,22 @@ ns.grid.constValue = {
         "direct": "direct"
     },
     dataType: {
-        modeView: 'view',
-        modeInput: 'input'
+        modeView: "view",
+        modeInput: "input"
+    },
+    templateType: {
+        default: "default"
+    },
+    returnType: {
+        single: "single",
+        multi: "multi"
+    },
+
+    merge: {
+        set: "_MERGE_SET",
+        type: "_MERGE_TYPE",
+        startIndex: "_MERGE_START_INDEX",
+        colspan: "_COLSPAN_COUNT",
+        rowspan: "_ROWSPAN_COUNT"
     }
 };

@@ -14,11 +14,11 @@ ns.table.setting = function () {
     var eventsSet = function (instance) {
         events = instance;
         return this;
-    }
+    };
 
     var eventsGet = function () {
         return events;
-    }
+    };
     
     var list = [];
     list.push(common);
@@ -30,7 +30,7 @@ ns.table.setting = function () {
         while (item = list.pop()){ 
             item.destroyAll && item.destroyAll();
         }
-    }
+    };
     
     //chaining 을 위해 개별적 함수 노출
     return {
@@ -47,5 +47,5 @@ ns.table.setting = function () {
         rowGet: row.get,
         rowSet: row.set,
         rowGetAdditionalDatas: row.getAdditionalDatas
-    }
+    };
 };

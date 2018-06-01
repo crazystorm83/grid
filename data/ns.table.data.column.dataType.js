@@ -25,11 +25,11 @@ ns.table.data.column.dataType = function (viewMode) {
     this.setStructureInfo = function (sectionType) {
         this.__convertor = __data[sectionType].convertor;
         this.__key = __data[sectionType].key;
-    }
+    };
     
     this.remove = function () {
         delete __data[sectionType][key];
-    }
+    };
     
     this.set = function (sectionType, column) {
         this.setStructureInfo(sectionType);
@@ -72,40 +72,40 @@ ns.table.data.column.dataType = function (viewMode) {
                 }
             }
         }
-    }
+    };
     
     this.get = function (sectionType, propertyName) {
         this.setStructureInfo(sectionType);
 
         return this.__key[propertyName];
-    }
+    };
 
     this.getConvertor = function (sectionType, id) {
         this.setStructureInfo(sectionType);
 
         return this.__convertor[id];
-    }
+    };
 
     this.removeConvertor = function (sectionType, id) {
         delete __data[sectionType].convetor[id];
-    }
+    };
 
     this.removeKey = function (sectionType, propertyName) {
         delete __data[sectionType].key[propertyName];
-    }
+    };
 
     this.removeAll = function (sectionType) {
         this.removeAllConvertor(sectionType);
         this.removeAllKey(sectionType);
-    }
+    };
 
     this.removeAllConvertor = function (sectionType) {
         delete __data[sectionType].convertor;
-    }
+    };
 
     this.removeAllKey = function (sectionType) {
         delete __data[sectionType].key;
-    }
+    };
     
     this.destroyAll = function () {
         for (var i in __data) {
@@ -113,5 +113,5 @@ ns.table.data.column.dataType = function (viewMode) {
         }
 
         this.__key = null;
-    }
+    };
 };

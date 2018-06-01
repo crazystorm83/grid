@@ -6,7 +6,7 @@ ns.table.data.column.sort = function () {
     
     var destroyAll = function () {
         
-    }
+    };
     
     return {
         
