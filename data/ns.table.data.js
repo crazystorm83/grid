@@ -34,7 +34,6 @@ ns.table.data = function (option) {
     };
 
     var renderCompleted = function () {
-        debugger;
         option.core.render.init();
         option.core.render.render();
     }

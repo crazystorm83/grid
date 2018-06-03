@@ -44,5 +44,9 @@ ns.grid.constValue = {
         startIndex: "_MERGE_START_INDEX",
         colspan: "_COLSPAN_COUNT",
         rowspan: "_ROWSPAN_COUNT"
+    },
+
+    className: {
+        hide: "hide"
     }
 };
