@@ -1,5 +1,5 @@
-ns.table.ui.column = function (option, options) {
-    var oCell = new ns.table.ui.cell(option, options);
+ns.table.ui.column = function (option, datas) {
+    var oCell = new ns.table.ui.cell(option, datas);
 
     this.addClass = function (columnId, className) {
         if (this.hasClass(columnId, className)) {

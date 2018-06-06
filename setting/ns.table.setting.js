@@ -46,6 +46,7 @@ ns.table.setting = function () {
         destroyAll: destroyAll,
         rowGet: row.get,
         rowSet: row.set,
-        rowGetAdditionalDatas: row.getAdditionalDatas
+        rowGetAdditionalDatas: row.getAdditionalDatas,
+        rowGetKeyColumns: row.getKeyColumns
     };
 };

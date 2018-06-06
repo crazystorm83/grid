@@ -20,6 +20,10 @@ ns.table.data.column = function (option) {
     this.__convertorDataTypeView;
     this.__convertorDataTypeControl;
     
+    /**
+     * 전역으로 사용할 변수 설정
+     * @param {String} sectionType 
+     */
     this.setStructureInfo = function (sectionType) {
         this.__columns = __data[sectionType].columns;
         this.__columnKeys = __data[sectionType].columnKeys;
@@ -28,6 +32,9 @@ ns.table.data.column = function (option) {
         this.__convertorDataTypeControl = __data[sectionType].convertorDataTypeControl;
     };
 
+    /**
+     * 내부 변수 초기화
+     */
     var initValue = function () {
         var sectionTypes = [theadType, tbodyType, tfooterType];
 
@@ -48,6 +55,9 @@ ns.table.data.column = function (option) {
         }
     };
 
+    /**
+     * column type 이 single 이고, body 컬럼 존재하지 않을 경우 header 컬럼으로 body 컬럼 만들기
+     */
     var initMakeColumn = function () {
         if (setting.commonGetColumnType() == constValue.columnType.single) {
             if (setting.columnGet(tbodyType).columns.length == 0) {
@@ -55,8 +65,29 @@ ns.table.data.column = function (option) {
             }
         }
     };
+
+    /**
+     * 컬럼의 title 정보를 가지고 section type 행 데이터 만들기
+     * @param {String} sectionType 
+     */
+    this.initMakeRowData = function (sectionType) {
+        var rows = setting.rowGet(sectionType);
+        if (rows == null || rows.length == 0) {
+            rows = [];
+
+            var columns = setting.columnGet(sectionType);
+            var row = {};
+            for (var i = 0, len = columns.length; i < len; i++) {
+                row[columns[i].propertyName] = columns[i].title;
+            }
+            rows.push(row);
+            setting.rowSet(sectionType, rows);
+        }
+    }
     
-    
+    /**
+     * 컬럼 초기화 (준비부)
+     */
     this.init = function () {
         initValue();
         initMakeColumn();
@@ -68,63 +99,76 @@ ns.table.data.column = function (option) {
 
         events && events.emit(ns.table.columnEvent.prepareInit, {});
         
-        var _sectionTypes, _sectionType, _columns;
+        var _sectionTypes, _sectionType;
         
         _sectionTypes = [theadType, tbodyType, tfooterType];
         
         for (var sectionTypeIdx = 0; sectionTypeIdx < _sectionTypes.length; sectionTypeIdx++) {
-            var _columnRows = [[]], _columnRowIdx = 0;
-            var _columnKeys = {};
-
-            _sectionType = _sectionTypes[sectionTypeIdx];
-
-            this.setStructureInfo(_sectionType);
-
-            if ([constValue.columnType.single, constValue.columnType.each].includes(setting.commonGetColumnType()))
-                _columns = Object.clone(setting.columnGet(theadType).columns, true);
-            else if ([constValue.columnType.multi].includes(setting.commonGetColumnType()))
-                _columns = Object.clone(setting.columnGet(_sectionType).columns, true);
-
-            events && events.emit(ns.table.columnEvent.initData, { columns: _columns, sectionType: _sectionType });
-            
-            for (var i = 0, len = _columns.length; i < len; i++) {
-                if (_columns[i].linechange === true)
-                    _columnRowIdx += 1;
-
-                if (!_columnRows[_columnRowIdx])
-                    _columnRows.push([]);
-
-                _columnRows[_columnRowIdx].push(columns[i]);
-
-                _columnKeys[columns[i].id] = columns[i];
-
-                this.__convertorDataTypeView.set(_sectionType, _columns[i], { 
-                    dataType: _columns[i].dataType || "00",
-                    isCheckZero: _columns[i].isCheckZero || false,
-                    isDisplayZero: _columns[i].isDisplayZero || false
-                });
-
-                if (!_columns[i].controlOption)
-                    _columns[i].controlOption = {};
-                this.__convertorDataTypeControl.set(_sectionType, _columns[i], {
-                    dataType: _columns[i].dataType || "00",
-                    isCheckZero: _columns[i].isCheckZero || false,
-                    isDisplayZero: _columns[i].isDisplayZero || false
-                });
-
-                if ($.isNull(columns[i].lineNo) || $.isEmpty(columns[i].lineNo)) {
-                    columns[i].lineNo = _columnRowIdx;
-                }
-            }
-
-            __data[_sectionType].columns = _columns;
-            __data[_sectionType].columnRows = _columnRows;
-            __data[_sectionType].columnKeys = _columnKeys;
+            this.initPrimitiveColumns(_sectionTypes[sectionTypeIdx]);
         }
 
         events && events.emit(ns.table.columnEvent.initCompleted);
     };
+
+    /**
+     * 컬럼 초기화 (실행부)
+     * @param {String} sectionType 
+     */
+    this.initPrimitiveColumns = function (sectionType) {
+        var _columns;
+        var _columnRows = [[]], _columnRowIdx = 0;
+        var _columnKeys = {};
+
+        this.setStructureInfo(sectionType);
+
+        if ([constValue.columnType.single, constValue.columnType.each].includes(setting.commonGetColumnType()))
+            _columns = Object.clone(setting.columnGet(theadType).columns, true);
+        else if ([constValue.columnType.multi].includes(setting.commonGetColumnType()))
+            _columns = Object.clone(setting.columnGet(sectionType).columns, true);
+
+        events && events.emit(ns.table.columnEvent.initData, { columns: _columns, sectionType: sectionType });
+        
+        for (var i = 0, len = _columns.length; i < len; i++) {
+            if (_columns[i].linechange === true)
+                _columnRowIdx += 1;
+
+            if (!_columnRows[_columnRowIdx])
+                _columnRows.push([]);
+
+            _columnRows[_columnRowIdx].push(columns[i]);
+
+            _columnKeys[columns[i].id] = columns[i];
+
+            this.__convertorDataTypeView.set(sectionType, _columns[i], { 
+                dataType: _columns[i].dataType || "00",
+                isCheckZero: _columns[i].isCheckZero || false,
+                isDisplayZero: _columns[i].isDisplayZero || false
+            });
+
+            if (!_columns[i].controlOption)
+                _columns[i].controlOption = {};
+            this.__convertorDataTypeControl.set(sectionType, _columns[i], {
+                dataType: _columns[i].dataType || "00",
+                isCheckZero: _columns[i].isCheckZero || false,
+                isDisplayZero: _columns[i].isDisplayZero || false
+            });
+
+            if ($.isNull(columns[i].lineNo) || $.isEmpty(columns[i].lineNo)) {
+                columns[i].lineNo = _columnRowIdx;
+            }
+        }
+
+        if (sectionType == theadType)
+            this.initMakeRowData(sectionType);
+
+        __data[sectionType].columns = _columns;
+        __data[sectionType].columnRows = _columnRows;
+        __data[sectionType].columnKeys = _columnKeys;
+    };
     
+    /**
+     * 
+     */
     this.render = function () {
         if (core.drawCancel) {
             events && events.emit(ns.table.renderEvent.cancelCompleted);
@@ -146,6 +190,11 @@ ns.table.data.column = function (option) {
 
     };
 
+    /**
+     * column id 로 컬럼 정보 가져오기
+     * @param {String} sectionType 
+     * @param {String} columnId 
+     */
     this.getById = function (sectionType, columnId) {
         this.setStructureInfo(sectionType);
 
@@ -157,6 +206,12 @@ ns.table.data.column = function (option) {
         return column;
     };
 
+    /**
+     * index 로 컬럼 정보 가져오기
+     * @param {String} sectionType 
+     * @param {Int} columnIndex 
+     * @returns {Object} { id: "", propertyName: "", width: "", ... }
+     */
     this.getByIndex = function (sectionType, columnIndex) {
         this.setStructureInfo(sectionType);
 
@@ -168,6 +223,19 @@ ns.table.data.column = function (option) {
         return column;
     };
     
+    /**
+     * 컬럼 정보 가져오기 (반환값 원본 입니다.)
+     * @param {String} sectionType
+     * @param {Object} option
+     * @example 
+     * {
+     *  //반환값 형태
+     *  //constValue.returnType.single: 일차원배열
+     *  //constValue.returnType.multi: 이차원배열
+     *  returnType: constValue.returnType.single | constValue.returnType.multi
+     * }
+     * @returns {Array} [{}, {}, ... | [[{}, {}, ...], [{}, {}, ...]]
+     */
     this.getAll = function (sectionType, option) {
         option = option || {};
         var returnType = option.returnType || constValue.returnType.single;
@@ -199,6 +267,9 @@ ns.table.data.column = function (option) {
     this.clear = function (sectionType) {
     };
     
+    /**
+     * 내부 변수 소멸하기
+     */
     this.destroyAll = function () {
         for (var i in __data) {
             for (var ii in __data[i]) {
@@ -217,7 +288,7 @@ ns.table.data.column = function (option) {
     };
     
     /**
-    * 컬럼 값을 가져옵니다.
+    * 컬럼 값을 가져오기.
     * @param {String} sectionType
     * @param {String} id 컬럼ID
     * @param {String} key 값 Key
@@ -225,5 +296,27 @@ ns.table.data.column = function (option) {
     this.getValue = function (sectionType, id, key) {
         var column = get(sectionType, id);
         return column && column[key];
+    };
+
+    //common method
+    /**
+     * 컬럼 기본 값 가져오기
+     * @param {Object} defaultValue
+     * @example 
+     * {
+     *  (String) id: "",
+     *  (String) propertyName: "",
+     *  (String) title: "",
+     *  (String) width: "100"
+     * }
+     */
+    this.getDefaultColumn = function (defaultValue) {
+        return $.extend({
+            id: "",
+            propertyName: "",
+            width: 100,
+            title: "",
+            controlOption: {}
+        }, defaultValue || {});
     };
 };

@@ -2,6 +2,7 @@
 
 ns.common = {
     operateMode: "development",
+    separate: "$",
     thousand: function () {
         return ",";
     },

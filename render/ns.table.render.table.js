@@ -6,17 +6,22 @@ ns.table.render.table = function (option) {
     var core = option.core, data = option.core.data, setting = option.setting;
     var events = setting.eventsGet();
     
+    
+
     //테이블 제어하기 위한 객체
     var oUI;
     var __data = {
         thead: {
-            tableMap: []
+            tableMap: [],
+            rawData: null
         },
         tbody: {
-            tableMap: []
+            tableMap: [],
+            rawData: null
         },
         tfooter: {
-            tableMap: []
+            tableMap: [],
+            rawData: null
         }
     };
 
@@ -33,21 +38,25 @@ ns.table.render.table = function (option) {
     this.render = function () {
         debugger;
         var sectionTypes = [theadType, tbodyType, tfooterType];
-        var columns, columnRows;
-        var rows = data.row.getAll(sectionType);
+        var columns, columnRows, rows;
 
         this.makeTable();
 
         for (var sectionTypeIdx = 0, sectionTypeLen = sectionTypes.length; sectionTypeIdx < sectionTypeLen; sectionTypeIdx++) {
+            rows = data.row.getAll(sectionTypes[sectionTypeIdx]);
             if (sectionTypes[sectionTypeIdx] == theadType) {
-                this.makeColgroup();
+                this.makeColgroup(sectionTypes[sectionTypeIdx]);
             }
             
             this.makeRows(sectionTypes[sectionTypeIdx], { rowRenderStartIndex: 0, rowRenderEndIndex: rows.length });
         }
+
+        var resultTableHTML = $.template("", {});
+
+        var $el = $(resultTableHTML);
         
         oUI = new ns.table.ui(option, {
-            el: null
+            el: $el
         });
     };
 
@@ -55,23 +64,23 @@ ns.table.render.table = function (option) {
 
     };
 
-    this.makeColgroup = function () {
+    this.makeColgroup = function (sectionType) {
         var madeColgroup = [];
         var columnRows = data.column.getAll(sectionType, { returnType: constValue.returnType.multi });
         for (var columnIdx = 0, columnLen = columnRows[0].length; columnIdx < columnLen; columnIdx++) {
             
-            madeColgroup.push(this.makeColByIndex(columnIdx));
+            madeColgroup.push(this.makeColByIndex(sectionType, columnIdx));
         }
         return madeColgroup;
     };
 
-    this.makeColByIndex = function (columnIndex) {
+    this.makeColByIndex = function (sectionType, columnIndex) {
         var col = { attr: {}, className: [] };
         var columnRows = data.column.getAll(sectionType, { returnType: constValue.returnType.multi });
         
         if (columnRows[0][columnIndex].width)
             col.attr.width = columnRows[0][columnIndex].width;
-        if (nc.common.isTrue(columnRows[0][columnIndex].isHide)) {
+        if (ns.common.isTrue(columnRows[0][columnIndex].isHide)) {
             if (!col.attr.className.includes(constValue.className.hide))
                 col.attr.className.push(constValue.className.hide);
         }
@@ -90,16 +99,15 @@ ns.table.render.table = function (option) {
         this.setStructureInfo(sectionType);
 
         for (; rowIdx < rowLen; rowIdx++) {
-            this.makeTableMap(row[constValue.merge.set], { rowCurrentRowIndex: rowIdx });
-            this.makeRow(sectionType, rows[rowIdx][constValue.rowKeyPropertyName], { rowCurrentRowIndex: rowIdx });
+            var datas = { rowCurrentRowIndex: rowIdx };
+            madeRows.push(this.makeRow(sectionType, rows[rowIdx][constValue.rowKeyPropertyName], datas));
         }
-
         return madeRows;
     };
     
     this.makeRow = function (sectionType, rowId, option) {
         option = option || {};
-        var rowCurrentRowIndex = option.rowCurrentRowIndex || 0;
+        var rowCurrentRowIdx = option.rowCurrentRowIndex || 0;
 
         var madeRow = [];
         var columns = data.column.getAll(sectionType);
@@ -110,6 +118,8 @@ ns.table.render.table = function (option) {
         this.setStructureInfo(sectionType);
         
         for (var groupRowIdx = 0, groupRowLen = columnRows.length; groupRowIdx < groupRowLen; groupRowIdx++) {
+            var datas = { rowCurrentRowIndex: rowCurrentRowIdx + (rowCurrentRowIdx * groupRowIdx) }
+            this.makeTableMap(sectionType, row[constValue.merge.set], datas);
             for (var columnIdx = 0, columnLen = columnRows[groupRowIdx].length; columnIdx < columnLen; columnIdx++) {
                 this.makeCells(sectionType, groupRowIdx, rowId, option);
             }
@@ -130,7 +140,10 @@ ns.table.render.table = function (option) {
         this.setStructureInfo(sectionType);
 
         for (var columnIdx = 0, columnLen = columnRows[groupRowIndex].length; columnIdx < columnLen; columnIdx++) {
-            if (ns.common.isTrue(this.__tableMap[rowIdx][columnIdx])) {
+            if (this.__tableMap[rowIdx][columnIdx] != -1) {
+                if (!this.__tableMap[rowIdx][columnIdx])
+                    this.__tableMap[rowIdx][columnIdx] = 1;
+
                 madeCells[columnIdx] = this.makeCell(sectionType, groupRowIndex, columnRows[groupRowIndex][columnIdx].id, rowId, { rowCurrentRowIndex: rowCurrentRowIdx, columnCurrentColumnIndex: columnIdx });
             } else {
                 madeCells[columnIdx] = null;
@@ -167,11 +180,14 @@ ns.table.render.table = function (option) {
     };
     
     this.makeTableMap = function (sectionType, mergeset, option) {
-        if (!mergeset)
-            return;
-
         option = option || {};
         var rowCurrentRowIdx = option.rowCurrentRowIndex || 0;
+
+        if (!mergeset) {
+            if (!this.__tableMap[rowCurrentRowIdx])
+                this.__tableMap[rowCurrentRowIdx] = [];
+            return;
+        }
         
         var columnRows = data.column.getAll(sectionType, { returnType: constValue.returnType.multi });
         var columnRowLen = columnRows[0].length;
@@ -187,8 +203,10 @@ ns.table.render.table = function (option) {
             var rowIdx = rowCurrentRowIdx + startRowIdx;
             var rowLen = rowCurrentRowIdx + startRowIdx + rowspan;
             var colIdx = startColumnIdx;
-            var colLen = columnIdx + colspan;
+            var colLen = colIdx + colspan;
             for (; rowIdx < rowLen; rowIdx++) {
+                if (!this.__tableMap[rowIdx])
+                    this.__tableMap[rowIdx] = [];
                 for (; colIdx < colLen; colIdx++) {
                     if (colIdx == startColumnIdx) {
                         this.__tableMap[rowIdx][colIdx] = {

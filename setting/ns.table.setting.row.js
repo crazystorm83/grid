@@ -9,18 +9,21 @@ ns.table.setting.row = function () {
     var __data = {
         thead: {
             datas: [],
+            keyColumns: null,
             url: null,
             param: null,
             additionalDatas: { 'SAMPLE01': 'SAMPLE_DATA_01', 'SAMPLE02': 'SAMPLE_DATA_02' }
         },
         tbody: {
             datas: [],
+            keyColumns: null,
             url: null,
             param: null,
             additionalDatas: { 'SAMPLE03': 'SAMPLE_DATA_03', 'SAMPLE04': 'SAMPLE_DATA_04' }
         },
         tfooter: {
             datas: [],
+            keyColumns: null,
             url: null,
             param: null,
             additionalDatas: { 'SAMPLE05': 'SAMPLE_DATA_05', 'SAMPLE06': 'SAMPLE_DATA_06' }
@@ -51,10 +54,15 @@ ns.table.setting.row = function () {
     /**
     * @param {String} sectionType
     * @param {String} url
+    * @param {Boolean} isWithColumn
     * @return {this}
     */
-    this.url = function (sectionType, url) {
-        //sectionType = sectionType || constValue.sectionType.thead;
+    this.url = function (sectionType, url, isWithColumn) {
+        if (arguments.length == 2)
+            sectionType = tbodyType;
+            
+        if (isWithColumn == null || isWithColumn == undefined)
+            isWithColumn = false;
         
         __data[sectionType].datas = null;
         __data[sectionType].url = url;
@@ -67,7 +75,8 @@ ns.table.setting.row = function () {
     * @return {this}
     */
     this.param = function (sectionType, param) {
-        //sectionType = sectionType || constValue.sectionType.thead;
+        if (arguments.length == 1)
+            sectionType = tbodyType;
 
         __data[sectionType].datas = null;
         __data[sectionType].param = param;
@@ -80,7 +89,8 @@ ns.table.setting.row = function () {
     * @return {this}
     */
     this.set = function (sectionType, value) {
-        //sectionType = sectionType || constValue.sectionType.thead;
+        if (arguments.length == 1)
+            sectionType = tbodyType;
 
         validate("set", value);
         
@@ -93,16 +103,32 @@ ns.table.setting.row = function () {
     * @return {Object}
     */
     this.get = function (sectionType) {
-        //sectionType = sectionType || constValue.sectionType.thead;
+        if (arguments.length == 0)
+            sectionType = tbodyType;
 
         return __data[sectionType];
     };
 
     this.getAdditionalDatas = function (sectionType) {
-        //sectionType = sectionType || constValue.sectionType.tbody;
+        if (arguments.length == 0)
+            sectionType = tbodyType;
         
         return __data[sectionType].additionalDatas;
     };
+
+    this.setKeyColumns = function (sectionType, keyColumns) {
+        if (arguments.length == 1)
+            sectionType = tbodyType;
+
+        __data[sectionType].keyColumns = keyColumns;
+    }
+
+    this.getKeyColumns = function (sectionType) {
+        if (arguments.length == 0)
+            sectionType = tbodyType;
+
+        return __data[sectionType].keyColumns;
+    }
     
     /**
     *
@@ -113,7 +139,14 @@ ns.table.setting.row = function () {
             delete __data[sectionTypes[sectionTypeIdx]];
         }
     };
-    this.seialize = function () {
-        return Object.clone(__data);
+    this.seialize = function (sectionType) {
+        switch (sectionType) {
+            case theadType:
+            case tbodyType:
+            case tfooterType:
+                return Object.clone(__data[sectionType]);
+            default:
+                return Object.clone(__data);
+        }
     };
 };

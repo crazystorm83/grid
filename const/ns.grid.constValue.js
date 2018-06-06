@@ -3,6 +3,19 @@
 ns.grid = {};
 
 ns.grid.constValue = {
+    rowKeyColumnPropertyName: "K-E-Y",
+    rowStateKeyColumnPropertyName: "R-O-W-S-T-A-T-E",
+    rowIndexColumnPropertyName: "R-O-W-I-N-D-E-X",
+    rowState: {
+        none: "none",
+        create: "create",
+        deleted: "deleted",
+        changed: "changed",
+        deletedNew: "deletedNew",
+    },
+    validate: {
+
+    },
     sectionType: {
         thead: "thead",
         tbody: "tbody",
@@ -49,5 +62,5 @@ ns.grid.constValue = {
     className: {
         hide: "hide"
     }
-    
+
 };

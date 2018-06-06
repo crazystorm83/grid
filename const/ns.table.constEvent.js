@@ -41,4 +41,21 @@ ns.table.columnEvent = {
 ns.table.pagingEvent = {
     initCompleted: "table.paging.initCompleted",
     renderCompleted: "table.paging.renderCompleted"
-}
+};
+
+ns.table.cellEvent = {
+    focus: "cell.focus",
+    blur: "cell.blur",
+    mouseenter: "cell.mouseenter",
+    mouseleave: "cell.mouseleave"
+};
+
+ns.table.event = {
+    focus: "table.focus",
+    blur: "table.blur",
+    mousedown: "table.mousedown",
+    mouseup: "table.mouseup",
+    click: "table.click",
+    mouseenter: "table.mouseenter",
+    mouseout: "table.mouseout"
+};
