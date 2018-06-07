@@ -45,7 +45,14 @@ ns.table.pagingEvent = {
     renderCompleted: "table.paging.renderCompleted"
 };
 
+ns.table.tdEvent = {
+    prepareInitRender: "td.prepareInitRender",
+    initRender: "td.initRender"    
+};
+
 ns.table.cellEvent = {
+    prepareInitRender: "cell.prepareInitRender",
+    initRender: "cell.initRender",
     focus: "cell.focus",
     blur: "cell.blur",
     mouseenter: "cell.mouseenter",
