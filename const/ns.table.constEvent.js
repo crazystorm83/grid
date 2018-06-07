@@ -22,6 +22,7 @@ ns.table.rowEvent = {
     initData: "table.row.init.data",
     //행 데이터 초기화 전
     prepareInit: "table.row.prepareInit",
+    prepareInitCompleted: "table.row.prepareInitCompleted",
     //행 데이터 초기화 완료
     initCompleted: "table.row.initCompleted",
     //행 데이터
@@ -33,6 +34,7 @@ ns.table.rowEvent = {
 ns.table.columnEvent = {
     initData: "table.column.init.data",
     prepareInit: "table.column.prepareInit",
+    prepareInitCompleted: "table.column.prepareInitCompleted",
     initCompleted: "table.column.initCompleted",
     prepareRender: "table.column.prepareRender",
     renderCompleted: "table.column.renderCompleted"
