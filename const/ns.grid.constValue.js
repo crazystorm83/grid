@@ -56,11 +56,11 @@ ns.grid.constValue = {
         type: "_MERGE_TYPE",
         startIndex: "_MERGE_START_INDEX",
         colspan: "_COLSPAN_COUNT",
-        rowspan: "_ROWSPAN_COUNT"
+        rowspan: "_ROWSPAN_COUNT",
+        fontSize: "_FONT_SIZE",
     },
 
     className: {
         hide: "hide"
     }
-
 };
