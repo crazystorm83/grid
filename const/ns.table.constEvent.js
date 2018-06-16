@@ -44,6 +44,8 @@ ns.table.pagingEvent = {
 };
 
 ns.table.cellEvent = {
+    change: "cell.change",
+    changeCompleted: "cell.changeCompleted",
     focus: "cell.focus",
     blur: "cell.blur",
     mouseenter: "cell.mouseenter",
@@ -51,6 +53,7 @@ ns.table.cellEvent = {
 };
 
 ns.table.event = {
+    init: "table.init",
     focus: "table.focus",
     blur: "table.blur",
     mousedown: "table.mousedown",

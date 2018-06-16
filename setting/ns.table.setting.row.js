@@ -121,6 +121,8 @@ ns.table.setting.row = function () {
             sectionType = tbodyType;
 
         __data[sectionType].keyColumns = keyColumns;
+
+        return this;
     }
 
     this.getKeyColumns = function (sectionType) {

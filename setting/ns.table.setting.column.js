@@ -1,5 +1,3 @@
-
-
 ns.table.setting.column = function () {
     "use strict";
     
@@ -84,11 +82,13 @@ ns.table.setting.column = function () {
         //sectionType = sectionType || constValue.sectionType.thead;
 
         __data[sectionType].IDNormalize = normalizeType;
+        return this;
     };
     this.setValueKey = function (sectionType, valueKey) {
         //sectionType = sectionType || constValue.sectionType.thead;
 
         __data[sectionType].valueKey = valueKey;
+        return this;
     };
     this.destroyAll = function () {
         var sectionTypes = [theadType, tbodyType, tfooterType];

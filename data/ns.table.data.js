@@ -34,14 +34,14 @@ ns.table.data = function (option) {
     };
 
     var renderCompleted = function () {
-        option.core.render.init();
-        option.core.render.render();
+        var events = option.setting.eventsGet();
+        events && events.emit(ns.table.event.init);
     }
 
     var destroyAll = function () {
         list.forEach(function (v, i, a) {
             v.destroyAll && v.destroyAll();
-        })
+        });
     };
 
     return {

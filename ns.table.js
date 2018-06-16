@@ -14,6 +14,8 @@ ns.table = function (setting) {
     var __eventHandler = new ns.table.eventHandler();
     
     if (__events) {
+        __events.on(ns.table.event.init, render);
+        __events.on(ns.table.event.renderComplete, renderCompleted);
         __events.on(constEvent.PRE_INIT_EXECUTESORT, __eventHandler.preInitExecuteSort.bind(this));	
         __events.on(constEvent.CLICK, __eventHandler.onClick.bind(this));
         __events.on(constEvent.FOCUS, __eventHandler.onFocus.bind(this));
@@ -27,6 +29,7 @@ ns.table = function (setting) {
     __core.setting = setting;
     __core.data = new ns.table.data({ core: __core, setting: setting });
     __core.render = new ns.table.render({ core: __core, setting: setting });
+    __core.view = new ns.table.view({ core: __core, setting: setting });
     //__core.ui = new ns.table.ui();
     __core.transaction = new ns.transaction();
     //__core.merge = new ns.table.merge();
@@ -39,11 +42,21 @@ ns.table = function (setting) {
         return setting;
     }
 
-    var draw = function () {
+    var init = function () {
         __core.drawCancel = false;
         __core.drawing = true;
         __core.data.init();
         __core.data.render();
+    };
+
+    function render() {
+        __core.render.init();
+        __core.render.render();
+    };
+
+    function renderCompleted(datas) {
+        __core.view.init(datas);
+        __core.view.render();
     };
     
     var drawRun = function () {
@@ -53,16 +66,18 @@ ns.table = function (setting) {
         if (__core.drawing) {
             __events.on(ns.table.renderEvent.cancelCompleted, function () {
                 __events.off(ns.table.renderEvent.cancelCompleted);
-                draw();
+                init();
             }.bind(this));
             drawCancel();
         } else {
-            draw();
+            init();
         }
     };
     
     var drawCancel = function () {
         if (__core.drawing) {
+            destroyAll();
+
             __core.drawing = false;
             __core.drawCancel = true;
         }
@@ -78,7 +93,7 @@ ns.table = function (setting) {
 
     var cellSetValue = function (sectionType, columnId, rowId, value) {
         var column = columnGet(sectionType, columnId);
-        __core.row.setValue(sectionType, column.propertyName, rowId, value);        
+        __core.row.setValue(sectionType, column.propertyName, rowId, value);       
     };
 
     var cellGetValue = function (sectionType, columnId, rowId) {
@@ -120,6 +135,7 @@ ns.table = function (setting) {
     };
     
     var destroyAll = function () {
+        __core.render.destroyAll && __core.render.destroyAll();
         __core.data.destroyAll && __core.data.destroyAll();
     };
     

@@ -7,19 +7,26 @@ ns.table.render = function (option) {
         theadType = constValue.sectionType.thead, tbodyType = constValue.sectionType.tbody, tfooterType = constValue.sectionType.tfooter;
     var core = option.core, data = option.core.data, setting = option.setting;
     var events = setting.eventsGet();
-
+    var list = [];
     var table = new ns.table.render.table(option);
+
+    list.push(table);
+
+    var $el = null;
 
     var init = function () {
         table.init();
     };
 
     var render = function () {
-        table.render();
+        $el = table.render();
+        events && events.emit(ns.table.event.renderComplete, { $el: $el });
     };
 
-    var destroy = function () {
-
+    var destroyAll = function () {
+        list.forEach(function (v, i, a) {
+            v.destroyAll && v.destroyAll();
+        });
     };
 
     return {

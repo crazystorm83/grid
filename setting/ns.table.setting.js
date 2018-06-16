@@ -39,14 +39,19 @@ ns.table.setting = function () {
         commonSetColumnType: common.setColumnType,
         commonGetColumnType: common.getColumnType,
         commonSetControlViewMode: common.setControlViewMode,
+        
         eventsGet: eventsGet,
         eventsSet: eventsSet,
+        
         columnGet: column.get,
         columnSet: column.set,
+
         destroyAll: destroyAll,
+        
         rowGet: row.get,
         rowSet: row.set,
         rowGetAdditionalDatas: row.getAdditionalDatas,
-        rowGetKeyColumns: row.getKeyColumns
+        rowGetKeyColumns: row.getKeyColumns,
+        rowSetKeyColumns: row.setKeyColumns
     };
 };

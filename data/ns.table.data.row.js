@@ -5,7 +5,7 @@ ns.table.data.row = function (option) {
     
     var constValue = ns.grid.constValue, 
         theadType = constValue.sectionType.thead, tbodyType = constValue.sectionType.tbody, tfooterType = constValue.sectionType.tfooter;
-    var core = option.core, setting = option.setting, data;
+    var core = option.core, setting = option.setting, data, view = option.core.view;
     var events = setting.eventsGet();
     var __data = {
         thead: {},
@@ -45,7 +45,7 @@ ns.table.data.row = function (option) {
 
         events && events.emit(ns.table.rowEvent.prepareInit);
 
-        var _sectionTypes, _sectionType, _columnRows, _columns, _rows;
+        var _sectionTypes, _sectionType, _columnRows, _columns, _rows, _row;
         
         _sectionTypes = [theadType, tbodyType, tfooterType];
         
@@ -79,18 +79,22 @@ ns.table.data.row = function (option) {
                         _columnRows = data.column.getAll(_sectionType, { returnType: constValue.returnType.multi });
                     }
                 }
-
+                //행 키 생성
                 this.makeKey(_sectionType, _rows[i]);
+                //행 상태 생성
                 this.makeState(_sectionType, _rows[i], constValue.rowState.none);
                 $.extend(_rows[i], setting.rowGetAdditionalDatas(_sectionType));
             }
 
             //빈행 처리
-            if (_rows.length == 0) {
+            if (_sectionType == tbodyType && _rows.length == 0) {
                 var mergeInfo = {};
                 mergeInfo[constValue.merge.startIndex] = 0;
                 mergeInfo[constValue.merge.colspan] = _columnRows[0].length
-                _rows.push();
+                _row = {};
+                _row[constValue.merge.set] = [];
+                _row[constValue.merge.set].push(mergeInfo);
+                _rows.push(_row);
             }
 
             __data[_sectionType].data = _rows;
@@ -115,9 +119,11 @@ ns.table.data.row = function (option) {
 
         this.setStructureInfo(sectionType);
         
-         this._data.find(function (v, i, a) {
-            if (v[constValue.rowKey] == rowId)
-                this.items.push(v);                
+        this._data.find(function (v, i, a) {
+            if (v[constValue.rowKeyColumnPropertyName] == rowId) {
+                this.items.push(v);
+                return true;
+            }
         }, returnValue);
         return returnValue.items.length == 0 ? null : returnValue.items[0];
     };
@@ -145,8 +151,10 @@ ns.table.data.row = function (option) {
 
         if (oldValue != value) {
             //call change event
+            events && events.emit(ns.table.cellEvent.change, {});
         }
         //call completed event
+        events && events.emit(ns.table.cellEvent.changCompleted, {});
     };
     
     this.destroyAll = function () {
@@ -182,7 +190,7 @@ ns.table.data.row = function (option) {
             row[constValue.rowKeyColumnPropertyName] = key;
         }
         else {
-            row[constValue.rowKeyColumnPropertyName] = this._key.index;
+            row[constValue.rowKeyColumnPropertyName] = this._key.index.toString();
             this._key.index += 1;
         }
     };

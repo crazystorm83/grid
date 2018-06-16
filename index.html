@@ -1,7 +1,7 @@
 <html>
 <head>
 <script language="javascript" type="text/javascript" src="./library/jquery.3.3.1.js"></script>
-<script language="javascript" type="text/javascript" src="./library/jquery.tmpl.js"></script>
+<script language="javascript" type="text/javascript" src="./library/jquery.tmpl.light.js"></script>
 <script language="javascript" type="text/javascript" src="./library/decimal.js"></script>
 <script language="javascript" type="text/javascript" src="./extends/Object.prototype.js"></script>
 <script language="javascript" type="text/javascript" src="./extends/Array.prototype.js"></script>
@@ -30,11 +30,11 @@
 
 <script language="javascript" type="text/javascript" src="./structure/ns.table.structure.js"></script>
 
-<script language="javascript" type="text/javascript" src="./ui/ns.table.ui.js"></script>
-<script language="javascript" type="text/javascript" src="./ui/ns.table.ui.table.js"></script>
-<script language="javascript" type="text/javascript" src="./ui/ns.table.ui.row.js"></script>
-<script language="javascript" type="text/javascript" src="./ui/ns.table.ui.column.js"></script>
-<script language="javascript" type="text/javascript" src="./ui/ns.table.ui.cell.js"></script>
+<script language="javascript" type="text/javascript" src="./view/ns.table.view.js"></script>
+<script language="javascript" type="text/javascript" src="./view/ns.table.view.table.js"></script>
+<script language="javascript" type="text/javascript" src="./view/ns.table.view.row.js"></script>
+<script language="javascript" type="text/javascript" src="./view/ns.table.view.column.js"></script>
+<script language="javascript" type="text/javascript" src="./view/ns.table.view.cell.js"></script>
 
 <script language="javascript" type="text/javascript" src="./data/ns.table.data.js"></script>
 <script language="javascript" type="text/javascript" src="./data/ns.table.data.column.js"></script>
@@ -44,75 +44,108 @@
 
 <script language="javascript" type="text/javascript" src="./render/ns.table.render.js"></script>
 <script language="javascript" type="text/javascript" src="./render/ns.table.render.table.js"></script>
+<script language="javascript" type="text/javascript" src="./render/ns.table.render.template.js"></script>
 
 <script language="javascript" type="text/javascript">
 
-	ns.table.eventHandler = function () {
-		this.onClick = function (e) {
+	$().ready(function () {
+		ns.table.eventHandler = function () {
+			this.onClick = function (e) {
+			};
+			this.onFocus = function (e) {
+			};
+			this.onBlur = function (e) {
+			};
+			this.onMousedown = function (e) {
+			};
+			this.onMouseup = function (e) {
+			};
+			this.onKeydown = function (e) {
+			};
+			this.onKeyup = function (e) {
+			};
+			
+			this.preInitExecuteSort = function (e) {
+			};
 		};
-		this.onFocus = function (e) {
-		};
-		this.onBlur = function (e) {
-		};
-		this.onMousedown = function (e) {
-		};
-		this.onMouseup = function (e) {
-		};
-		this.onKeydown = function (e) {
-		};
-		this.onKeyup = function (e) {
-		};
+
+		// ns.table.ui.fix = function () {
+		// 	var top, left, corner;
+		// };
+
+		var events = new ns.events();
+		// events.on(ns.table.rowEvent.init, function () {
+		// 	debugger;
+		// });
+		// /**
+		//  * 
+		//  * @param {Object} data 
+		//  * 	@example { prevRow, curRow, nextRow }
+		// */
+		// events.on(ns.table.renderEvent.renderSkipRow, function (data) {
+		// 	debugger;
+		// });
+		// events.on(ns.table.columnEvent.init, function () {
+		// 	debugger;
+		// });
+
+		var setting = ns.table.setting(events);
+		var columns, headRows, bodyRows;
+
+		columns = [
+			{ id: "columnid01", propertyName: "propertyName01", width: "50" },
+			{ id: "columnid02", propertyName: "propertyName02", width: "100" },
+			{ id: "columnid03", propertyName: "propertyName03", width: "80" },
+			{ id: "columnid04", propertyName: "propertyName04", width: "80", linechange: true },
+			{ id: "columnid05", propertyName: "propertyName05", width: "80" },
+			{ id: "columnid06", propertyName: "propertyName06", width: "80" }
+		];
+		headRows = [
+			{ columnid01: "title00_01", columnid02: "title00_02", columnid03: "title00_03" }
+		];
 		
-		this.preInitExecuteSort = function (e) {
-		};
-	};
+		////simple data
+		//bodyRows = [
+		//	{ columnid01: "value00_01", columnid02: "value00_02", columnid03: "value00_03" },
+		//	{ columnid01: "value01_01", columnid02: "value01_02", columnid03: "value01_03" },
+		//	{ columnid01: "value02_01", columnid02: "value02_02", columnid03: "value02_03" }
+		//];
 
-	// ns.table.ui.fix = function () {
-	// 	var top, left, corner;
-	// };
+		////colspan data
+		//bodyRows = [
+		//	{ columnid01: "value00_01", columnid02: "value00_02", columnid03: "value00_03" },
+		//	{ columnid01: "value01_01", columnid02: "value01_02", columnid03: "value01_03", "_MERGE_SET": [{ "_MERGE_START_INDEX": 0, "_COLSPAN_COUNT": 2 }] },
+		//	{ columnid01: "value02_01", columnid02: "value02_02", columnid03: "value02_03" }
+		//];
 
-	var events = new ns.events();
-	// events.on(ns.table.rowEvent.init, function () {
-	// 	debugger;
-	// });
-	// /**
-	//  * 
-	//  * @param {Object} data 
-	//  * 	@example { prevRow, curRow, nextRow }
-	// */
-	// events.on(ns.table.renderEvent.renderSkipRow, function (data) {
-	// 	debugger;
-	// });
-	// events.on(ns.table.columnEvent.init, function () {
-	// 	debugger;
-	// });
+		//rowspan data
+		bodyRows = [
+			{ columnid01: "value00_01", columnid02: "value00_02", columnid03: "value00_03" },
+			{ columnid01: "value01_01", columnid02: "value01_02", columnid03: "value01_03", "_MERGE_SET": [{ "_MERGE_START_INDEX": 1, "_ROWSPAN_COUNT": 2 }] },
+			{ columnid01: "value02_01", columnid02: "value02_02", columnid03: "value02_03" }
+		];
 
-	var setting = ns.table.setting(events);
-	
-	var columns = [
-		{ id: "columnid01", propertyName: "propertyName01", width: "50" },
-		{ id: "columnid02", propertyName: "propertyName02", width: "100" },
-		{ id: "columnid03", propertyName: "propertyName03", width: "80" }
-	];
-	var headRows = [
-		{ columnid01: "title00_01", columnid02: "title00_02", columnid03: "title00_03" }
-	];
-	var bodyRows = [
-		{ columnid01: "value00_01", columnid02: "value00_02", columnid03: "value00_03", "_MERGE_SET": [{ '_MERGE_START_INDEX': 0, '_COLSPAN_COUNT': 1 }] },
-		{ columnid01: "value01_01", columnid02: "value01_02", columnid03: "value01_03" },
-		{ columnid01: "value02_01", columnid02: "value02_02", columnid03: "value02_03" }
-	];
+		////colspan & rowspan data
+		//bodyRows = [
+		//	{ columnid01: "value00_01", columnid02: "value00_02", columnid03: "value00_03", "_MERGE_SET": [{ "_MERGE_START_INDEX": 0, "_COLSPAN_COUNT": 2, "_ROWSPAN_COUNT": 2 }] },
+		//	{ columnid01: "value01_01", columnid02: "value01_02", columnid03: "value01_03" },
+		//	{ columnid01: "value02_01", columnid02: "value02_02", columnid03: "value02_03" }
+		//];
 
-	setting.commonSetTableLayout(ns.grid.constValue.tableLayout.grid).
-			eventsSet(events).
-			columnSet(ns.grid.constValue.sectionType.thead, columns).
-			rowSet(ns.grid.constValue.sectionType.thead, headRows).
-			rowSet(ns.grid.constValue.sectionType.tbody, bodyRows);
+		setting.commonSetTableLayout(ns.grid.constValue.tableLayout.grid).
+				eventsSet(events).
+				columnSet(ns.grid.constValue.sectionType.thead, columns).
+				rowSet(ns.grid.constValue.sectionType.thead, headRows).
+				rowSet(ns.grid.constValue.sectionType.tbody, bodyRows);
+				//rowSetKeyColumns(ns.grid.constValue.sectionType.thead, ["columnid01", "columnid02"]).
+				//rowSetKeyColumns(ns.grid.constValue.sectionType.tbody, ["columnid01", "columnid02"]);
 
-	var g = new ns.table(setting);
-	g.draw.run();
+		var g = new ns.table(setting);
+		g.draw.run();
+	});
 </script>
 </head>
 <body>
+	<div id="container"></div>
 </body>
 </html>

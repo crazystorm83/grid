@@ -135,9 +135,9 @@ ns.table.data.column = function (option) {
             if (!_columnRows[_columnRowIdx])
                 _columnRows.push([]);
 
-            _columnRows[_columnRowIdx].push(columns[i]);
+            _columnRows[_columnRowIdx].push(_columns[i]);
 
-            _columnKeys[columns[i].id] = columns[i];
+            _columnKeys[_columns[i].id] = _columns[i];
 
             this.__convertorDataTypeView.set(sectionType, _columns[i], { 
                 dataType: _columns[i].dataType || "00",
@@ -153,8 +153,8 @@ ns.table.data.column = function (option) {
                 isDisplayZero: _columns[i].isDisplayZero || false
             });
 
-            if ($.isNull(columns[i].lineNo) || $.isEmpty(columns[i].lineNo)) {
-                columns[i].lineNo = _columnRowIdx;
+            if ($.isNull(_columns[i].lineNo) || $.isEmpty(_columns[i].lineNo)) {
+                _columns[i].lineNo = _columnRowIdx;
             }
         }
 
