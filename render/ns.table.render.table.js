@@ -186,10 +186,6 @@ ns.table.render.table = function (option) {
         var tdPreInitReturnValue, tdInitReturnValue, tdReturnValue;
         var returnValue;
         var widget;
-
-        var data = {
-            controlType: column.controlType
-        };
         
         this.setStructureInfo(sectionType);
 
@@ -214,7 +210,7 @@ ns.table.render.table = function (option) {
         if (returnValue.controlType)
             data.controlType = returnValue.controlType;
 
-        widget = ctrlMng.get(data.controlType);
+        //widget = ctrlMng.get(data.controlType);
 
         //컨트롤 생성 후 generate 하기
         events && events.emit(ns.table.cellEvent.initRender, { column: column, row: row, widget: widget });
@@ -238,7 +234,7 @@ ns.table.render.table = function (option) {
     this.makeCellEmpty = function () {
 
     };
-    
+
     /**
      * 클래스 정보 만들기
      * @param {Object} customValues 
