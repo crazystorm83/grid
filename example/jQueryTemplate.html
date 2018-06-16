@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <script language="javascript" type="text/javascript" src="../library/jquery.3.3.1.js"></script>
+        <script language="javascript" type="text/javascript" src="../library/jquery.tmpl.light.js"></script>
+        <script language="javascript" type="text/javascript">
+            $().ready(function () {
+                var a = $.tmpl("<code><%=o.data.value%>" +
+                    "<%for (i = 0, len = o.data.arr.length; i < len; i++) { %>" + 
+                    "<span><%=i%></span>" + 
+                    "<% } %>" +
+                    "</code>", { 
+                    data: {
+                        value: "a", 
+                        arr: [
+                            { id: "id1", name: "name1" },
+                            { id: "id2", name: "name2" }
+                        ]
+                    } 
+                });
+                console.log(a);
+            });
+        </script>
+    </head>
+    <body>
+        <div id="template"></div>
+    </body>
+</html>
