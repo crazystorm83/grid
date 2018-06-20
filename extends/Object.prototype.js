@@ -20,21 +20,3 @@ if (!Object.clone) {
         return result;
     };
 }
-
-if (!Object.prototype.isTrue) {
-    Object.prototype.isTrue = function () {
-        return false;
-    };
-}
-
-if (!Object.prototype.isFalse) {
-    Object.prototype.isFalse = function () {
-        return true;
-    };
-}
-
-if (!Object.prototype.isBoolean) {
-    Object.prototype.isBoolean = function () {
-        return false;
-    };
-}

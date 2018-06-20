@@ -24,6 +24,10 @@ ns.table.view = function (option) {
     var rowRemoveClass = function (sectionType, rowId, className) {
         oRow.removeClass(sectionType, rowId, className);
     };
+
+    var rowSetValue = function (sectionType, columnId, rowId, value) {
+        defaultDatas.$el.find(sectionType).find("tr[data-key='"+ rowId +"']").find("td[data-columnid='"+ columnId +"']").html(value);
+    };
     
     return {
         init: init,
@@ -32,6 +36,10 @@ ns.table.view = function (option) {
         row: {
             addClass: rowAddClass,
             removeClass: rowRemoveClass
+        },
+
+        cell: {
+            setValue: rowSetValue
         }
     };
 };

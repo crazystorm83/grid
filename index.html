@@ -12,6 +12,7 @@
 
 <script language="javascript" type="text/javascript" src="./ns.js"></script>
 
+<script language="javascript" type="text/javascript" src="./library/ns.global.js"></script>
 <script language="javascript" type="text/javascript" src="./ns.events.js"></script>
 <script language="javascript" type="text/javascript" src="./ns.transaction.js"></script>
 <script language="javascript" type="text/javascript" src="./ns.util.js"></script>
@@ -47,6 +48,7 @@
 <script language="javascript" type="text/javascript" src="./render/ns.table.render.template.js"></script>
 
 <script language="javascript" type="text/javascript">
+	var g;
 
 	$().ready(function () {
 		ns.table.eventHandler = function () {
@@ -140,12 +142,32 @@
 				//rowSetKeyColumns(ns.grid.constValue.sectionType.thead, ["columnid01", "columnid02"]).
 				//rowSetKeyColumns(ns.grid.constValue.sectionType.tbody, ["columnid01", "columnid02"]);
 
-		var g = new ns.table(setting);
+		g = new ns.table(setting);
 		g.draw.run();
 	});
+
+	function setValueA() {
+		g && g.cell.setValue("tbody", "columnid01", "0", "a");
+	}
+
+	function setValueB() {
+		g && g.cell.setValue("tbody", "columnid01", "0", "b");
+	}
+
+	function begin() {
+		g && g.begin();
+	}
+
+	function commit() {
+		g && g.commit();
+	}
 </script>
 </head>
 <body>
 	<div id="container"></div>
+	<button onclick="begin();">begin</button>
+	<button onclick="setValueA();">setValueA</button>
+	<button onclick="setValueB();">setValueB</button>
+	<button onclick="commit();">commit</button>
 </body>
 </html>

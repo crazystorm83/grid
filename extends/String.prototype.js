@@ -59,25 +59,3 @@ if (!String.prototype.leftPad) {
         return v;
     };
 }
-
-
-
-if (!String.prototype.isTrue) {
-    String.prototype.isTrue = function () {
-        var v = this.toLowerCase();
-        return v == "1" || v == "y" || v == "true";
-    };
-}
-
-if (!String.prototype.isFalse) {
-    String.prototype.isFalse = function () {
-        var v = this.toLowerCase();
-        return v == "0" || v == "n" || v == "false";
-    };
-}
-
-if (!String.prototype.isBoolean) {
-    String.prototype.isBoolean = function () {
-        return false;
-    };
-}

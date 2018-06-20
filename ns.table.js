@@ -92,8 +92,9 @@ ns.table = function (setting) {
     };
 
     var cellSetValue = function (sectionType, columnId, rowId, value) {
-        var column = columnGet(sectionType, columnId);
-        __core.row.setValue(sectionType, column.propertyName, rowId, value);       
+        __core.data.row.setValue(sectionType, columnId, rowId, value);
+
+        __core.transaction.push(__core.view.cell, "setValue", arguments);
     };
 
     var cellGetValue = function (sectionType, columnId, rowId) {
@@ -133,6 +134,14 @@ ns.table = function (setting) {
     
     var renderCell = function () {
     };
+
+    var transactionBegin = function () {
+        __core.transaction.begin();
+    }
+
+    var transactionCommit = function () {
+        __core.transaction.commit();
+    }
     
     var destroyAll = function () {
         __core.render.destroyAll && __core.render.destroyAll();
@@ -145,9 +154,6 @@ ns.table = function (setting) {
         draw: {
             cancel: drawCancel,
             run: drawRun			
-        },
-        cell: {
-            setValue: cellSetValue
         },
         // column: __core.data.column,
         // row: __core.data.row,
@@ -168,6 +174,7 @@ ns.table = function (setting) {
         cell: {
             editable: cellSetEditable,
             editable: cellGetEditable,
+            setValue: cellSetValue,
             getValue: cellGetValue
             //get: cellGet,
             //move: cellMove,
@@ -176,6 +183,9 @@ ns.table = function (setting) {
             //set: cellSet,
             //visible: cellVisible,
         },
+
+        begin: transactionBegin,
+        commit: transactionCommit,
         
         //line: {
         //	add: lineAdd,
