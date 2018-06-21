@@ -51,6 +51,7 @@ ns.grid.constValue = {
         multi: "multi"
     },
 
+    //merge const value
     merge: {
         set: "_MERGE_SET",
         type: "_MERGE_TYPE",
@@ -60,6 +61,13 @@ ns.grid.constValue = {
         fontSize: "_FONT_SIZE",
     },
 
+    //resize const value
+    resizeType: {
+        normal: "normal",
+        group: "group"
+    },
+
+    //class const value
     className: {
         hide: "hide"
     }

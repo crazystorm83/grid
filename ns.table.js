@@ -56,6 +56,7 @@ ns.table = function (setting) {
     };
 
     function renderCompleted(datas) {
+        $.extend(datas, { containerId: setting.common.getContainerId });
         __core.view.init(datas);
         __core.view.render();
     };
@@ -92,9 +93,17 @@ ns.table = function (setting) {
         return __core.column.getById(sectionType, columnId);
     };
 
-    var cellSetValue = function (sectionType, columnId, rowId, value) {
-        __core.data.row.setValue(sectionType, columnId, rowId, value);
+    var cellRefresh = function (sectionType, columnId, rowId) {
+        var column = __core.data.column.getById(sectionType, columnId);
+        var row = __core.data.row.getById(sectionType, rowId);
+        
+        cellSetValue(sectionType, columnId, rowId, row[column.propertyName]);
+    };
 
+    var cellSetValue = function (sectionType, columnId, rowId, value) {
+        //data
+        __core.data.row.setValue(sectionType, columnId, rowId, value);
+        //view
         __core.transaction.push(__core.view.cell, "setValue", arguments);
     };
 

@@ -90,10 +90,14 @@
 		// */
 		// events.on(ns.table.renderEvent.renderSkipRow, function (data) {
 		// 	debugger;
+		// 	return 1;
 		// });
-		// events.on(ns.table.columnEvent.init, function () {
+		// events.on(ns.table.renderEvent.renderSkipRow, function () {
 		// 	debugger;
+		// 	return { value: 2 };
 		// });
+
+		var a = events.emit(ns.table.renderEvent.renderSkipRow, {});
 
 		var setting = new ns.table.setting({ events: events });
 		var columns, headRows, bodyRows;
@@ -138,7 +142,8 @@
 		//	{ columnid01: "value02_01", columnid02: "value02_02", columnid03: "value02_03" }
 		//];
 
-		setting.common.setTableLayout(ns.grid.constValue.tableLayout.grid).
+		setting.common.setContainerId("container").
+				common.setTableLayout(ns.grid.constValue.tableLayout.grid).
 				column.set(ns.grid.constValue.sectionType.thead, columns).
 				row.set(ns.grid.constValue.sectionType.thead, headRows).
 				row.set(ns.grid.constValue.sectionType.tbody, bodyRows);

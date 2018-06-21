@@ -64,7 +64,8 @@ ns.table.render.table = function (option) {
 
         var $el = $(resultTableHTML);
 
-        $("#container").append($el);
+        if (setting.common.getContainerId())
+            $("#" + setting.common.getContainerId()).append($el);
 
         return $el;
     };

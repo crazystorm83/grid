@@ -8,6 +8,7 @@ ns.table.setting.common = function (option) {
 	this.constValue = ns.grid.constValue;
 	
 	this.__data = {
+		containerId: null,
 		/**
 		* view: cell 선택하면 읽기 모드 (값 입력 or 셀 선택 후 F2 면 edit)
 		* input: cell 선택하면 edit
@@ -19,6 +20,15 @@ ns.table.setting.common = function (option) {
 
 		templateType: this.constValue.templateType.default,
 		defaultTableClass: ""
+	};
+
+	this.setContainerId = function (containerId) {
+		this.__data.containerId = containerId;
+		return this.self;
+	};
+
+	this.getContainerId = function () {
+		return this.__data.containerId;
 	};
 	
 	this.setTableLayout = function (value) {

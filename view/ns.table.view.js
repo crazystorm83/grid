@@ -1,5 +1,8 @@
 ns.table.view = function (option) {
     var defaultDatas = {
+        containerId: null,
+        container: null,
+        $container: null,
         $el: null //table DOM element
     };
     
@@ -7,6 +10,11 @@ ns.table.view = function (option) {
 
     var init = function (datas) {
         $.extend(defaultDatas, datas);
+
+        if (defaultDatas.containerId) {
+            defaultDatas.container = document.getElementById(defaultDatas.containerId);
+            defaultDatas.$container = $(defaultDatas.container);
+        }
 
         oTable = new ns.table.view.table(option, defaultDatas);
         oRow = new ns.table.view.row(option, defaultDatas);
@@ -26,7 +34,7 @@ ns.table.view = function (option) {
     };
 
     var rowSetValue = function (sectionType, columnId, rowId, value) {
-        defaultDatas.$el.find(sectionType).find("tr[data-key='"+ rowId +"']").find("td[data-columnid='"+ columnId +"']").html(value);
+        defaultDatas.$container.find("table").find(sectionType).find("tr[data-key='"+ rowId +"']").find("td[data-columnid='"+ columnId +"']").html(value);
     };
     
     return {
