@@ -1,10 +1,14 @@
-ns.table.setting.column = function () {
+ns.table.setting.column = function (option) {
     "use strict";
     
-    var constValue = ns.grid.constValue, 
-        theadType = constValue.sectionType.thead, tbodyType = constValue.sectionType.tbody, tfooterType = constValue.sectionType.tfooter;
+    this.self = option.scope;
     
-    var __data = {
+    this.constValue = ns.grid.constValue, 
+    this.theadType = this.constValue.sectionType.thead;
+    this.tbodyType = this.constValue.sectionType.tbody;
+    this.tfooterType = this.constValue.sectionType.tfooter;
+
+    this.__data = {
         thead: {
             columns: [],
             valueKey: "id",
@@ -22,13 +26,13 @@ ns.table.setting.column = function () {
         }
     };
     
-    var __columns;
+    this._columns;
     
     this.setStructureInfo = function (sectionType) {
-        __columns = __data[sectionType].columns;
+        this._columns = this.__data[sectionType].columns;
     }
     
-    var validate = function (key, value, predicate) {
+    this.validate = function (key, value, predicate) {
         if (ns.common.operateMode == "development") {
             switch (key) {
                 case "set":
@@ -56,11 +60,11 @@ ns.table.setting.column = function () {
     * @return {this}
     */
     this.set = function (sectionType, value) {
-        //sectionType = sectionType || constValue.sectionType.thead;
-        validate("set", value);
+        //sectionType = sectionType || this.constValue.sectionType.thead;
+        this.validate("set", value);
         
-        __data[sectionType].columns = value;
-        return this;
+        this.__data[sectionType].columns = value;
+        return this.self;
     };
     
     /**
@@ -68,9 +72,9 @@ ns.table.setting.column = function () {
     * @return {Object}
     */
     this.get = function (sectionType) {
-        //sectionType = sectionType || constValue.sectionType.thead;
+        //sectionType = sectionType || this.constValue.sectionType.thead;
 
-        return __data[sectionType];
+        return this.__data[sectionType];
     };
     
     /**
@@ -79,24 +83,24 @@ ns.table.setting.column = function () {
     * @return {Object}
     */
     this.IDNormalize = function (sectionType, normalizeType) {
-        //sectionType = sectionType || constValue.sectionType.thead;
+        //sectionType = sectionType || this.constValue.sectionType.thead;
 
-        __data[sectionType].IDNormalize = normalizeType;
-        return this;
+        this.__data[sectionType].IDNormalize = normalizeType;
+        return this.self;
     };
     this.setValueKey = function (sectionType, valueKey) {
-        //sectionType = sectionType || constValue.sectionType.thead;
+        //sectionType = sectionType || this.constValue.sectionType.thead;
 
-        __data[sectionType].valueKey = valueKey;
-        return this;
+        this.__data[sectionType].valueKey = valueKey;
+        return this.self;
     };
     this.destroyAll = function () {
-        var sectionTypes = [theadType, tbodyType, tfooterType];
+        var sectionTypes = [this.theadType, this.tbodyType, this.tfooterType];
         for (var sectionTypeIdx = 0; sectionTypeIdx < _sectionTypes.length; sectionTypeIdx++) {
-            delete __data[sectionTypes[sectionTypeIdx]];
+            delete this.__data[sectionTypes[sectionTypeIdx]];
         }
     }
     this.seialize = function () {
-        return Object.clone(__data);
+        return Object.clone(this.__data);
     };
 };

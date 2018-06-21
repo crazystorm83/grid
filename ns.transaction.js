@@ -1,6 +1,6 @@
 
 
-ns.transaction = function () {
+ns.transaction = function (option) {
     "use strict";
     
     this.state = ns.transaction.state.close;

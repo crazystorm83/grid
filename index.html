@@ -47,6 +47,10 @@
 <script language="javascript" type="text/javascript" src="./render/ns.table.render.table.js"></script>
 <script language="javascript" type="text/javascript" src="./render/ns.table.render.template.js"></script>
 
+
+<script language="javascript" type="text/javascript" src="./modules/ns.modules.js"></script>
+<script language="javascript" type="text/javascript" src="./modules/ns.modules.histroy.js"></script>
+
 <script language="javascript" type="text/javascript">
 	var g;
 
@@ -91,7 +95,7 @@
 		// 	debugger;
 		// });
 
-		var setting = ns.table.setting(events);
+		var setting = new ns.table.setting({ events: events });
 		var columns, headRows, bodyRows;
 
 		columns = [
@@ -134,24 +138,26 @@
 		//	{ columnid01: "value02_01", columnid02: "value02_02", columnid03: "value02_03" }
 		//];
 
-		setting.commonSetTableLayout(ns.grid.constValue.tableLayout.grid).
-				eventsSet(events).
-				columnSet(ns.grid.constValue.sectionType.thead, columns).
-				rowSet(ns.grid.constValue.sectionType.thead, headRows).
-				rowSet(ns.grid.constValue.sectionType.tbody, bodyRows);
-				//rowSetKeyColumns(ns.grid.constValue.sectionType.thead, ["columnid01", "columnid02"]).
-				//rowSetKeyColumns(ns.grid.constValue.sectionType.tbody, ["columnid01", "columnid02"]);
+		setting.common.setTableLayout(ns.grid.constValue.tableLayout.grid).
+				column.set(ns.grid.constValue.sectionType.thead, columns).
+				row.set(ns.grid.constValue.sectionType.thead, headRows).
+				row.set(ns.grid.constValue.sectionType.tbody, bodyRows);
+				//row.setKeyColumns(ns.grid.constValue.sectionType.thead, ["columnid01", "columnid02"]).
+				//row.setKeyColumns(ns.grid.constValue.sectionType.tbody, ["columnid01", "columnid02"]);
 
 		g = new ns.table(setting);
 		g.draw.run();
 	});
 
 	function setValueA() {
-		g && g.cell.setValue("tbody", "columnid01", "0", "a");
+		g && g.cell.setValue("tbody", "columnid01", "0", "1-a");
+		g && g.cell.setValue("tbody", "columnid03", "2", "1-a");
 	}
 
 	function setValueB() {
-		g && g.cell.setValue("tbody", "columnid01", "0", "b");
+		g && g.cell.setValue("tbody", "columnid01", "0", "2-a");
+		g && g.cell.setValue("tbody", "columnid02", "1", "2-a");
+		g && g.cell.setValue("tbody", "columnid03", "2", "2-a");
 	}
 
 	function begin() {

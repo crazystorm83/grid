@@ -64,9 +64,9 @@ klass(ns.table.data.column, {
      * column type 이 single 이고, body 컬럼 존재하지 않을 경우 header 컬럼으로 body 컬럼 만들기
      */
     initMakeColumn: function () {
-        if (this.setting.commonGetColumnType() == this.constValue.columnType.single) {
-            if (this.setting.columnGet(this.tbodyType).columns.length == 0) {
-                this.setting.columnSet(this.tbodyType, Object.clone(this.setting.columnGet(this.theadType).columns));
+        if (this.setting.common.getColumnType() == this.constValue.columnType.single) {
+            if (this.setting.column.get(this.tbodyType).columns.length == 0) {
+                this.setting.column.set(this.tbodyType, Object.clone(this.setting.column.get(this.theadType).columns));
             }
         }
     },
@@ -76,17 +76,17 @@ klass(ns.table.data.column, {
      * @param {String} sectionType 
      */
     initMakeRowData: function (sectionType) {
-        var rows = this.setting.rowGet(sectionType);
+        var rows = this.setting.row.get(sectionType);
         if (rows == null || rows.length == 0) {
             rows = [];
 
-            var columns = this.setting.columnGet(sectionType);
+            var columns = this.setting.column.get(sectionType);
             var row = {};
             for (var i = 0, len = columns.length; i < len; i++) {
                 row[columns[i].propertyName] = columns[i].title;
             }
             rows.push(row);
-            this.setting.rowSet(sectionType, rows);
+            this.setting.row.set(sectionType, rows);
         }
     },
 
@@ -126,10 +126,10 @@ klass(ns.table.data.column, {
 
         this.setStructureInfo(sectionType);
 
-        if ([this.constValue.columnType.single, this.constValue.columnType.each].includes(this.setting.commonGetColumnType()))
-            _columns = Object.clone(this.setting.columnGet(this.theadType).columns, true);
-        else if ([this.constValue.columnType.multi].includes(this.setting.commonGetColumnType()))
-            _columns = Object.clone(this.setting.columnGet(sectionType).columns, true);
+        if ([this.constValue.columnType.single, this.constValue.columnType.each].includes(this.setting.common.getColumnType()))
+            _columns = Object.clone(this.setting.column.get(this.theadType).columns, true);
+        else if ([this.constValue.columnType.multi].includes(this.setting.common.getColumnType()))
+            _columns = Object.clone(this.setting.column.get(sectionType).columns, true);
 
         this.events && this.events.emit(ns.table.columnEvent.initData, { columns: _columns, sectionType: sectionType });
         

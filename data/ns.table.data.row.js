@@ -36,7 +36,7 @@ klass(ns.table.data.row, {
         for (var sectionTypeIdx = 0, sectionTypeLen = sectionTypes.length; sectionTypeIdx < sectionTypeLen; sectionTypeIdx++) {
             this.__data[sectionTypes[sectionTypeIdx]].data = [];
             this.__data[sectionTypes[sectionTypeIdx]].key = {
-                refKeys: this.setting.rowGetKeyColumns(sectionTypes[sectionTypeIdx]),
+                refKeys: this.setting.row.getKeyColumns(sectionTypes[sectionTypeIdx]),
                 index: 0
             };
         };
@@ -65,13 +65,26 @@ klass(ns.table.data.row, {
 
             _columnRows = this.data.column.getAll(_sectionType, { returnType: this.constValue.returnType.multi });
 
-            if ([this.constValue.columnType.single, this.constValue.columnType.each].includes(this.setting.commonGetColumnType()))
-                _rows = Object.clone(this.setting.rowGet(_sectionType).datas, true);
-            else if ([this.constValue.columnType.multi].includes(this.setting.commonGetColumnType()))
-                _rows = Object.clone(this.setting.rowGet(_sectionType).datas, true);
+            if ([this.constValue.columnType.single, this.constValue.columnType.each].includes(this.setting.common.getColumnType()))
+                _rows = Object.clone(this.setting.row.get(_sectionType).datas, true);
+            else if ([this.constValue.columnType.multi].includes(this.setting.common.getColumnType()))
+                _rows = Object.clone(this.setting.row.get(_sectionType).datas, true);
 
             this.events && this.events.emit(ns.table.rowEvent.initData, { data: _rows, sectionType: _sectionType });
 
+
+            //빈행 처리
+            if (_sectionType == this.tbodyType && _rows.length == 0) {
+                var mergeInfo = {};
+                mergeInfo[this.constValue.merge.startIndex] = 0;
+                mergeInfo[this.constValue.merge.rowspan] = _columnRows.length;
+                mergeInfo[this.constValue.merge.colspan] = _columnRows[0].length
+                _row = {};
+                _row[this.constValue.merge.set] = [];
+                _row[this.constValue.merge.set].push(mergeInfo);
+                _rows.push(_row);
+            }
+            
             for (var i = 0, len = _rows.length; i < len; i++) {
                 if (_sectionType == this.theadType) {
                     if (_columnRows == null || _columnRows.length == 0) {
@@ -91,18 +104,7 @@ klass(ns.table.data.row, {
                 this.makeKey(_sectionType, _rows[i]);
                 //행 상태 생성
                 this.makeState(_sectionType, _rows[i], this.constValue.rowState.none);
-                $.extend(_rows[i], this.setting.rowGetAdditionalDatas(_sectionType));
-            }
-
-            //빈행 처리
-            if (_sectionType == this.tbodyType && _rows.length == 0) {
-                var mergeInfo = {};
-                mergeInfo[this.constValue.merge.startIndex] = 0;
-                mergeInfo[this.constValue.merge.colspan] = _columnRows[0].length
-                _row = {};
-                _row[this.constValue.merge.set] = [];
-                _row[this.constValue.merge.set].push(mergeInfo);
-                _rows.push(_row);
+                $.extend(_rows[i], this.setting.row.getAdditionalDatas(_sectionType));
             }
 
             this.__data[_sectionType].data = _rows;

@@ -1,57 +1,34 @@
 
 
 /**
- * 
+ * 그리드 설정 정보 객체
  */
-ns.table.setting = function () {
+ns.table.setting = function (option) {
     "use strict";
     
-    var common = new ns.table.setting.common();
-    var column = new ns.table.setting.column();
-    var row = new ns.table.setting.row();
-    var events;
+    this.common = new ns.table.setting.common({ scope: this });
+    this.column = new ns.table.setting.column({ scope: this });
+    this.row = new ns.table.setting.row({ scope: this });
+    this.events = option.events;
     
-    var eventsSet = function (instance) {
-        events = instance;
+    this.eventsSet = function (instance) {
+        this.events = instance;
         return this;
     };
 
-    var eventsGet = function () {
-        return events;
+    this.eventsGet = function () {
+        return this.events;
     };
     
     var list = [];
-    list.push(common);
-    list.push(column);
-    list.push(row);
+    list.push(this.common);
+    list.push(this.column);
+    list.push(this.row);
     
     var destroyAll = function () {
         var item;
         while (item = list.pop()){ 
             item.destroyAll && item.destroyAll();
         }
-    };
-    
-    //chaining 을 위해 개별적 함수 노출
-    return {
-        commonSetTableLayout: common.setTableLayout,
-        commonSetTableRenderingDirection: common.setTableRenderingDirection,
-        commonSetColumnType: common.setColumnType,
-        commonGetColumnType: common.getColumnType,
-        commonSetControlViewMode: common.setControlViewMode,
-        
-        eventsGet: eventsGet,
-        eventsSet: eventsSet,
-        
-        columnGet: column.get,
-        columnSet: column.set,
-
-        destroyAll: destroyAll,
-        
-        rowGet: row.get,
-        rowSet: row.set,
-        rowGetAdditionalDatas: row.getAdditionalDatas,
-        rowGetKeyColumns: row.getKeyColumns,
-        rowSetKeyColumns: row.setKeyColumns
     };
 };
